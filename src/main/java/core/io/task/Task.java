@@ -97,8 +97,6 @@ public abstract class Task {
     }
 
     public void stop() {
-        //System.out.println("Stopping task initiated by: " + Utils.getStackTrace());
-        //System.out.println("Stopping task " + getClassName() + " with " + getKeyName());
         running.set(false);
         onStop();
     }

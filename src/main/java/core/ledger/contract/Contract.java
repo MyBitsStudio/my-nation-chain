@@ -20,13 +20,16 @@ public abstract class Contract {
     private final String address, tokenName;
     private String hash;
     private final Map<String, TransactionOutput> transactions = new ConcurrentHashMap<>();
-    private MintWallet mint;
-    private GasWallet gas;
-    private ContractWallet genesis;
+    private final MintWallet mint;
+    private final GasWallet gas;
+    private final ContractWallet genesis;
 
     public Contract(String name){
         this.tokenName = name;
         this.address = "6xf"+ StringUtilities.createRandomString(21);
+        this.genesis = new ContractWallet(this);
+        this.gas = new GasWallet(this);
+        this.mint = new MintWallet(this);
         generateHash();
     }
 

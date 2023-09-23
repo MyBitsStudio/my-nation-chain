@@ -71,7 +71,7 @@ public abstract class Transaction {
         id = getHash();
         outputs.add(new TransactionOutput( this.receiver, new ProtectedDouble(value.subtract(gasFee.get())), id, contract.getAddress())); //send value to recipient
         outputs.add(new TransactionOutput( this.sender, new ProtectedDouble(leftOver) , id, contract.getAddress())); //send the left over 'change' back to sender
-        //outputs.add(new TransactionOutput( this.contract.getGasProvider().getPublicKey(), gasFee.get(), id, contract.getAddress())); //send gas fee to contract
+        outputs.add(new TransactionOutput( this.contract.getGas().getPublicKey(), new ProtectedDouble(gasFee.get()), id, contract.getAddress())); //send gas fee to contract
 
         for(TransactionOutput o : outputs) {
             HyperLedger.getLedger().getUTXO().put(o.PTID() , o);
@@ -81,6 +81,7 @@ public abstract class Transaction {
             if(i.getUTXO() == null) continue; //if Transaction can't be found skip it
             HyperLedger.getLedger().getUTXO().remove(i.getUTXO().PTID());
         }
+
         PROPERTIES.put("status", "FINISH");
         PROPERTIES.put("timestamp", TimeUtilities.getTimeUnformatted());
         return true;
