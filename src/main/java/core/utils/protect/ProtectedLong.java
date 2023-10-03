@@ -1,9 +1,13 @@
 package core.utils.protect;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class ProtectedLong {
+public class ProtectedLong implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 8102559931435268752L;
     volatile AtomicLong value = new AtomicLong(0L);
 
     public ProtectedLong() {

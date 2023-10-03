@@ -10,7 +10,7 @@ public class LedgerAttributes {
     static{
         //core settings
         ATTRIBUTES.put("ENGINE_PROCESSING_CYCLE_RATE", 600);
-        ATTRIBUTES.put("CHAIN_SAVING_CYCLE", "JSON");
+        ATTRIBUTES.put("CHAIN_SAVING_CYCLE", "SERIAL");
 
         //chain settings
         ATTRIBUTES.put("MINIMUM_TRANSACTION_AMOUNT", 0.000005D);

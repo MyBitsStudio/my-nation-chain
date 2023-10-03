@@ -5,6 +5,7 @@ import core.ledger.block.transaction.Transaction;
 import core.ledger.block.transaction.TransactionOutput;
 import core.ledger.contract.Contract;
 import core.ledger.wallet.Wallet;
+import core.utils.data.ChainSaver;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -51,7 +52,7 @@ public class HyperLedger {
 
     private final List<Contract> CONTRACTS = new CopyOnWriteArrayList<>();
     private final List<Wallet> WALLETS = new CopyOnWriteArrayList<>();
-    private final Map<String, TransactionOutput> UTXO = new ConcurrentHashMap<>();
+    private Map<String, TransactionOutput> UTXO = new ConcurrentHashMap<>();
     private final AtomicBoolean booting = new AtomicBoolean(true);
 
     private static HyperLedger singleton;
@@ -104,7 +105,15 @@ public class HyperLedger {
     }
 
     public void initiate(){
+        synchronized (booting){
+            if(booting.get()){
+                CompletableFuture<Void> future =
+                        CompletableFuture.runAsync(() -> UTXO = ChainSaver.getInstance().loadUTXO())
+                        .thenRunAsync(() -> {
 
+                        });
+            }
+        }
     }
 
     public void addTransactionToChain(@NotNull Transaction transaction){

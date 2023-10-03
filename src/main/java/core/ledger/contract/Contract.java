@@ -10,6 +10,8 @@ import core.utils.CryptoUtilities;
 import core.utils.StringUtilities;
 import lombok.Getter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +19,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 @Getter
-public abstract class Contract {
+public abstract class Contract implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -4193299940730789441L;
 
     public String getAddress() {
         return address;

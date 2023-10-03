@@ -7,6 +7,7 @@ import core.ledger.contract.Contract;
 import core.ledger.wallet.Wallet;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
@@ -14,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 public class GasWallet extends Wallet {
+
+    @Serial
+    private static final long serialVersionUID = -3145319180021838752L;
 
     public GasWallet(Contract contract){super(contract);}
 

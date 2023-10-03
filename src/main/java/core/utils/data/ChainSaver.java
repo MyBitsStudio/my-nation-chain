@@ -6,6 +6,7 @@ import core.ledger.block.transaction.TransactionOutput;
 import core.ledger.contract.Contract;
 import core.ledger.wallet.Wallet;
 import core.utils.data.json.JsonSaver;
+import core.utils.data.serial.SerialSave;
 
 import java.util.Map;
 
@@ -33,8 +34,7 @@ public class ChainSaver {
             }
             case "YAML" -> {
             }
-            case "SERIAL" -> {
-            }
+            case "SERIAL" -> chainSave = new SerialSave();
             default -> chainSave = new JsonSaver();
         }
     }

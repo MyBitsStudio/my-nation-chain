@@ -13,7 +13,6 @@ import core.ledger.wallet.Wallet;
 import core.ledger.wallet.impl.ContractWallet;
 import core.ledger.wallet.impl.GasWallet;
 import core.ledger.wallet.impl.MintWallet;
-import core.utils.CryptoUtilities;
 import core.utils.data.ChainSave;
 import core.utils.exception.json.*;
 import core.utils.exception.*;
@@ -46,7 +45,7 @@ public class JsonSaver implements ChainSave {
     @Override
     public void saveBlock(@NotNull Block block) {
         object = new JsonObject();
-        synchronized (new File(blockLocation()+block.getLink().get())){
+        synchronized (new File(blockLocation())){
             object.addProperty("hash", block.getHash());
             object.addProperty("previousHash", block.getPreviousHash());
             object.addProperty("merkle", block.getMerkle());
@@ -71,7 +70,7 @@ public class JsonSaver implements ChainSave {
     @Override
     public void saveContract(@NotNull Contract contract) {
         object = new JsonObject();
-        synchronized (new File(contractLocation()+contract.getAddress())){
+        synchronized (new File(contractLocation())){
             object.addProperty("address", contract.getAddress());
             object.addProperty("type", contract.getType().name());
             object.addProperty("tokenName", contract.getTokenName());
@@ -110,7 +109,7 @@ public class JsonSaver implements ChainSave {
 
                 saveKeys(wallet.getPublicKey(), wallet.getPrivateKey(), wallet.getPublicAddress());
 
-                try (FileWriter file = new FileWriter(walletLocation()+wallet.getPublicAddress()+".json")) {
+                try (FileWriter file = new FileWriter(walletLocation()+wallet.getPublicAddress()+"/"+wallet.getPublicAddress()+".json")) {
                     file.write(builder.toJson(object));
                     file.flush();
                 } catch (IOException e) {
@@ -246,7 +245,7 @@ public class JsonSaver implements ChainSave {
     private void saveKeys(@NotNull PublicKey pKey, PrivateKey privateK, String address){
         X509EncodedKeySpec spec = new X509EncodedKeySpec(pKey.getEncoded());
         try(FileWriter file = new FileWriter(walletLocation()+address+"/publicKey.key")){
-            file.write(builder.toJson(spec));
+            file.write(Arrays.toString(spec.getEncoded()));
             file.flush();
         } catch (IOException e) {
             throw new KeySavingException(e.getMessage(), e);
@@ -254,7 +253,7 @@ public class JsonSaver implements ChainSave {
 
         spec = new X509EncodedKeySpec(privateK.getEncoded());
         try(FileWriter file = new FileWriter(walletLocation()+address+"/privateKey.key")){
-            file.write(builder.toJson(spec));
+            file.write(Arrays.toString(spec.getEncoded()));
             file.flush();
         } catch (IOException e) {
             throw new KeySavingException(e.getMessage(), e);

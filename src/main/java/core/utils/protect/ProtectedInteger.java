@@ -1,9 +1,13 @@
 package core.utils.protect;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ProtectedInteger {
+public class ProtectedInteger implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 8409601078241091631L;
     volatile AtomicInteger value = new AtomicInteger(0);
 
     public ProtectedInteger() {

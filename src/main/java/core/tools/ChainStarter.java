@@ -47,9 +47,6 @@ public class ChainStarter {
         ChainSaver.getInstance().saveBlock(newBlock);
         ChainSaver.getInstance().saveContract(genesis);
         ChainSaver.getInstance().saveWallet(wallet);
-        ChainSaver.getInstance().saveWallet(genesis.getGenesis());
-        ChainSaver.getInstance().saveWallet(genesis.getGas());
-        ChainSaver.getInstance().saveWallet(genesis.getMint());
         ChainSaver.getInstance().saveUTXO(UTXO);
 
     }

@@ -9,6 +9,8 @@ import core.utils.StringUtilities;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
@@ -19,7 +21,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public abstract class Wallet {
+public abstract class Wallet implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -6949400179600134713L;
 
     public PrivateKey getPrivateKey() {
         return privateKey;

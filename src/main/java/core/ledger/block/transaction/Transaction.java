@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Arrays;
@@ -19,8 +21,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-public abstract class Transaction {
+public abstract class Transaction implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 8329256847493725634L;
     protected String id;
 
     public String getId() {

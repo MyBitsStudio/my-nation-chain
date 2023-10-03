@@ -7,11 +7,15 @@ import core.ledger.contract.Contract;
 import core.utils.CryptoUtilities;
 import core.utils.protect.ProtectedDouble;
 
+import java.io.Serial;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class SystemTransaction extends Transaction {
+
+    @Serial
+    private static final long serialVersionUID = 3633739462484802821L;
 
     public SystemTransaction(PublicKey from, PublicKey to, double value, ArrayList<TransactionInput> inputs, Contract contract){
         super();

@@ -8,13 +8,18 @@ import core.utils.protect.ProtectedLong;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Block implements Comparable<Block> {
+public class Block implements Comparable<Block>, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -7608332501314105099L;
 
     private String hash;
 

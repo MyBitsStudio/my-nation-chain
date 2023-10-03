@@ -1,9 +1,13 @@
 package core.utils.protect;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ProtectedDouble {
+public class ProtectedDouble implements Serializable {
 
+    @Serial
+    private static final long serialVersionUID = 2924702683293675276L;
     volatile AtomicReference<Double> value = new AtomicReference<>(0.000000D);
 
     public ProtectedDouble() {
