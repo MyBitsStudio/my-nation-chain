@@ -10,6 +10,8 @@ import core.utils.CryptoUtilities;
 import core.utils.StringUtilities;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -17,12 +19,74 @@ import java.util.concurrent.ConcurrentMap;
 @Getter
 public abstract class Contract {
 
-    private final String address, tokenName;
-    private String hash;
-    private final Map<String, TransactionOutput> transactions = new ConcurrentHashMap<>();
-    private final MintWallet mint;
-    private final GasWallet gas;
-    private final ContractWallet genesis;
+    public String getAddress() {
+        return address;
+    }
+
+    public String getTokenName() {
+        return tokenName;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public Map<String, TransactionOutput> getTransactions() {
+        return transactions;
+    }
+
+    public MintWallet getMint() {
+        return mint;
+    }
+
+    public void setMint(MintWallet mint) {
+        this.mint = mint;
+    }
+
+    public GasWallet getGas() {
+        return gas;
+    }
+
+    public void setGas(GasWallet gas) {
+        this.gas = gas;
+    }
+
+    public ContractWallet getGenesis() {
+        return genesis;
+    }
+
+    public void setGenesis(ContractWallet genesis) {
+        this.genesis = genesis;
+    }
+
+    public ContractType getType() {
+        return type;
+    }
+
+    public void setType(ContractType type) {
+        this.type = type;
+    }
+
+    public List<String> getWallets() {
+        return wallets;
+    }
+
+    public void setWallets(List<String> wallets) {
+        this.wallets = wallets;
+    }
+
+    protected final String address, tokenName;
+    protected String hash;
+    protected final Map<String, TransactionOutput> transactions = new ConcurrentHashMap<>();
+    protected MintWallet mint;
+    protected GasWallet gas;
+    protected ContractWallet genesis;
+    protected ContractType type;
+    protected List<String> wallets = new ArrayList<>();
 
     public Contract(String name){
         this.tokenName = name;
@@ -32,6 +96,18 @@ public abstract class Contract {
         this.mint = new MintWallet(this);
         generateHash();
     }
+
+    public Contract(String address, String name, String hash, List<String> wallets){
+        this.address = address;
+        this.tokenName = name;
+        this.hash = hash;
+        this.wallets.addAll(wallets);
+    }
+
+    public void postLoad(){
+
+    }
+
 
     public void generateHash(){
         this.hash = CryptoUtilities.applySha256(

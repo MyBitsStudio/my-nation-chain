@@ -1,11 +1,14 @@
 package core;
 
-import core.io.ThreadProgressor;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import core.io.task.Chain;
 import core.io.task.TaskHandler;
 import core.io.task.impl.BlockGenerator;
 import core.io.task.impl.ChainValidator;
 import core.io.task.impl.NetworkValidator;
+import core.io.threads.CoreEngineThreadFactory;
+import core.io.threads.ServerThreadFactory;
+import core.io.threads.impl.ChainThread;
 import core.ledger.HyperLedger;
 import core.ledger.wallet.props.Mnemonic;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -16,6 +19,7 @@ import java.util.concurrent.*;
 public class LedgerLauncher {
 
     public final static ExecutorService LOADER = Executors.newSingleThreadExecutor();
+    private static final ThreadFactory THREAD_FACTORY_BUILDER = new ThreadFactoryBuilder().setThreadFactory(new CoreEngineThreadFactory()).build();
     public static void main(String[] args){
 
         Chain.bound(LOADER)
@@ -40,12 +44,18 @@ public class LedgerLauncher {
     }
 
     private static Runnable startMainThread(){
-        ScheduledExecutorService execute = new ScheduledThreadPoolExecutor(1);
-        execute.schedule(() -> {
-            ThreadProgressor.sequence();
-            TaskHandler.sequence();
+        final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor(THREAD_FACTORY_BUILDER);
+        final ScheduledFuture<?> handle = executorService.scheduleAtFixedRate(new ChainThread(), 0,
+                LedgerAttributes.getIntValue("ENGINE_PROCESSING_CYCLE_RATE"),
+                TimeUnit.MILLISECONDS);
+        final Thread exceptionHandlerThread = new Thread(() -> {
+            try {
+                handle.get();
+            } catch (ExecutionException | InterruptedException e){
 
-        }, 300, TimeUnit.MILLISECONDS);
+            }
+        }, "Core Thread Exception Handler");
+        exceptionHandlerThread.start();
         return null;
     }
 }

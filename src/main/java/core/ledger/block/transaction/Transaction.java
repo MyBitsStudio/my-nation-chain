@@ -18,10 +18,113 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Getter@Setter
+
 public abstract class Transaction {
 
-    protected String id, block, node;
+    protected String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getBlock() {
+        return block;
+    }
+
+    public void setBlock(String block) {
+        this.block = block;
+    }
+
+    public String getNode() {
+        return node;
+    }
+
+    public void setNode(String node) {
+        this.node = node;
+    }
+
+    public PublicKey getSender() {
+        return sender;
+    }
+
+    public void setSender(PublicKey sender) {
+        this.sender = sender;
+    }
+
+    public PublicKey getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(PublicKey receiver) {
+        this.receiver = receiver;
+    }
+
+    public ProtectedDouble getGasFee() {
+        return gasFee;
+    }
+
+    public void setGasFee(ProtectedDouble gasFee) {
+        this.gasFee = gasFee;
+    }
+
+    public ProtectedDouble getValue() {
+        return value;
+    }
+
+    public void setValue(ProtectedDouble value) {
+        this.value = value;
+    }
+
+    public byte[] getSignature() {
+        return signature;
+    }
+
+    public void setSignature(byte[] signature) {
+        this.signature = signature;
+    }
+
+    public ProtectedInteger getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(ProtectedInteger sequence) {
+        this.sequence = sequence;
+    }
+
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
+
+    public Map<String, String> getPROPERTIES() {
+        return PROPERTIES;
+    }
+
+    public List<TransactionInput> getInputs() {
+        return inputs;
+    }
+
+    public void setInputs(List<TransactionInput> inputs) {
+        this.inputs = inputs;
+    }
+
+    public List<TransactionOutput> getOutputs() {
+        return outputs;
+    }
+
+    public void setOutputs(List<TransactionOutput> outputs) {
+        this.outputs = outputs;
+    }
+
+    protected String block;
+    protected String node;
     protected PublicKey sender, receiver;
     protected ProtectedDouble gasFee = new ProtectedDouble(), value = new ProtectedDouble();
     protected byte[] signature;
@@ -98,8 +201,8 @@ public abstract class Transaction {
                 "Recipient : " + CryptoUtilities.fromKey(receiver) + " \n" +
                 "Value : " + value.get() + " \n" +
                 "Gas Fee : " + gasFee.get() + " \n" +
-//                "Contract : " + contract.getAddress() + " \n" +
-//                "Contract Hash : " + contract.getHash() + " \n" +
+                "Contract : " + contract.getAddress() + " \n" +
+                "Contract Hash : " + contract.getHash() + " \n" +
                 "Properties : " + PROPERTIES + " \n" +
                 "Block : " + block + " \n" +
                 "Sequence : " + sequence.get() + " \n" +

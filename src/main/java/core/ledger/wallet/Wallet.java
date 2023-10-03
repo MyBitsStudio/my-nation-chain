@@ -7,23 +7,78 @@ import core.ledger.wallet.props.Mnemonic;
 import core.utils.CryptoUtilities;
 import core.utils.StringUtilities;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Getter
 public abstract class Wallet {
+
+    public PrivateKey getPrivateKey() {
+        return privateKey;
+    }
+
+    public void setPrivateKey(PrivateKey privateKey) {
+        this.privateKey = privateKey;
+    }
+
+    public PublicKey getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(PublicKey publicKey) {
+        this.publicKey = publicKey;
+    }
+
+    public byte[] getAccessKey() {
+        return accessKey;
+    }
+
+    public void setAccessKey(byte[] accessKey) {
+        this.accessKey = accessKey;
+    }
+
+    public String[] getUnencrypted() {
+        return unencrypted;
+    }
+
+    public void setUnencrypted(String[] unencrypted) {
+        this.unencrypted = unencrypted;
+    }
+
+    public String getPublicAddress() {
+        return publicAddress;
+    }
+
+    public List<String> getContractList() {
+        return contractList;
+    }
+
+    public ConcurrentHashMap<String, TransactionOutput> getTransactions() {
+        return transactions;
+    }
+
+    public List<Contract> getContracts() {
+        return contracts;
+    }
+
+    public void setContracts(List<Contract> contracts) {
+        this.contracts = contracts;
+    }
 
     protected PrivateKey privateKey;
     protected PublicKey publicKey;
     protected byte[] accessKey;
     protected String[] unencrypted;
     protected final String publicAddress;
+    protected final List<String> contractList = new ArrayList<>();
 
     protected final ConcurrentHashMap<String, TransactionOutput> transactions = new ConcurrentHashMap<>();
     protected List<Contract> contracts = new CopyOnWriteArrayList<>();
@@ -41,6 +96,19 @@ public abstract class Wallet {
         contracts.add(0, contract);
     }
 
+    public Wallet(PublicKey publicKey, PrivateKey privateKey, String publicAddress, @NotNull String accessKey,
+                  List<String> contracts, Map<String, TransactionOutput> transactions){
+        this.publicKey = publicKey;
+        this.privateKey = privateKey;
+        this.publicAddress = publicAddress;
+        this.accessKey = accessKey.getBytes();
+        this.contractList.addAll(contracts);
+        this.transactions.putAll(transactions);
+    }
+
+    public void postLoad(){
+
+    }
 
     public Contract getContract(String address){
         for (Contract contract : contracts) {

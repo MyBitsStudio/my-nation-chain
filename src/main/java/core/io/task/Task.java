@@ -6,7 +6,6 @@ import lombok.Setter;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Getter@Setter
 public abstract class Task {
 
     public static final Object KEY = new Object();
@@ -16,6 +15,62 @@ public abstract class Task {
     private int delay, countdown, runDuration;
 
     private boolean immediate;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getDelay() {
+        return delay;
+    }
+
+    public int getCountdown() {
+        return countdown;
+    }
+
+    public void setCountdown(int countdown) {
+        this.countdown = countdown;
+    }
+
+    public int getRunDuration() {
+        return runDuration;
+    }
+
+    public void setRunDuration(int runDuration) {
+        this.runDuration = runDuration;
+    }
+
+    public boolean isImmediate() {
+        return immediate;
+    }
+
+    public void setImmediate(boolean immediate) {
+        this.immediate = immediate;
+    }
+
+    public AtomicBoolean getRunning() {
+        return running;
+    }
+
+    public Runnable getOnComplete() {
+        return onComplete;
+    }
+
+    public void setOnComplete(Runnable onComplete) {
+        this.onComplete = onComplete;
+    }
+
+    public Object getBoss() {
+        return boss;
+    }
+
+    public void setBoss(Object boss) {
+        this.boss = boss;
+    }
 
     private final AtomicBoolean running = new AtomicBoolean(true);
 

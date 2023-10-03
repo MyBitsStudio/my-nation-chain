@@ -17,10 +17,38 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@Getter
 public class HyperLedger {
 
     private final List<Block> CHAIN = new CopyOnWriteArrayList<>();
+
+    public List<Block> getCHAIN() {
+        return CHAIN;
+    }
+
+    public List<Contract> getCONTRACTS() {
+        return CONTRACTS;
+    }
+
+    public List<Wallet> getWALLETS() {
+        return WALLETS;
+    }
+
+    public Map<String, TransactionOutput> getUTXO() {
+        return UTXO;
+    }
+
+    public AtomicBoolean getBooting() {
+        return booting;
+    }
+
+    public static HyperLedger getSingleton() {
+        return singleton;
+    }
+
+    public static void setSingleton(HyperLedger singleton) {
+        HyperLedger.singleton = singleton;
+    }
+
     private final List<Contract> CONTRACTS = new CopyOnWriteArrayList<>();
     private final List<Wallet> WALLETS = new CopyOnWriteArrayList<>();
     private final Map<String, TransactionOutput> UTXO = new ConcurrentHashMap<>();

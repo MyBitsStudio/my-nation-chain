@@ -8,15 +8,70 @@ import core.utils.protect.ProtectedLong;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Getter
 public class Block implements Comparable<Block> {
 
-    private String hash, previousHash, merkle;
+    private String hash;
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public String getPreviousHash() {
+        return previousHash;
+    }
+
+    public void setPreviousHash(String previousHash) {
+        this.previousHash = previousHash;
+    }
+
+    public String getMerkle() {
+        return merkle;
+    }
+
+    public void setMerkle(String merkle) {
+        this.merkle = merkle;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public ProtectedLong getTimestamp() {
+        return timestamp;
+    }
+
+    public ProtectedInteger getNonce() {
+        return nonce;
+    }
+
+    public ProtectedInteger getLink() {
+        return link;
+    }
+
+    public ProtectedDouble getValue() {
+        return value;
+    }
+
+    public BlockStage getStage() {
+        return stage;
+    }
+
+    public void setStage(BlockStage stage) {
+        this.stage = stage;
+    }
+
+    private String previousHash;
+    private String merkle;
     private final List<Transaction> transactions = new CopyOnWriteArrayList<>();
     private final ProtectedLong timestamp = new ProtectedLong(new Date().getTime());
     private final ProtectedInteger nonce = new ProtectedInteger(), link = new ProtectedInteger();
@@ -33,6 +88,19 @@ public class Block implements Comparable<Block> {
         }
         this.value = new ProtectedDouble(value);
         this.hash = calculateHash();
+    }
+
+    public Block(String hash, String previousHash, String merkle, int link, long timestamp, int nonce, double value, BlockStage stage,
+                 List<Transaction> transactions) {
+        this.hash = hash;
+        this.previousHash = previousHash;
+        this.merkle = merkle;
+        this.link.set(link);
+        this.timestamp.set(timestamp);
+        this.nonce.set(nonce);
+        this.value = new ProtectedDouble(value);
+        this.stage = stage;
+        this.transactions.addAll(transactions);
     }
 
     public String calculateHash() {
@@ -96,5 +164,16 @@ public class Block implements Comparable<Block> {
     public void close(){
         this.stage = BlockStage.CLOSED;
 
+    }
+
+    @Override
+    public String toString(){
+        return "-----*----- Block "+link.get()+" -----*-----\n" +
+                "Transactions : "+transactions.size()+"\n" +
+                "Transaction List : "+ Arrays.toString(transactions.toArray())+"\n" +
+                "Hash : "+hash+"\n" +
+                "Time : "+timestamp.get()+"\n" +
+                "Previous Block : "+previousHash+"\n" +
+                "Balance : "+value.get()+"\n";
     }
 }

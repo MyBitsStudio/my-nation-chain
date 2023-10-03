@@ -19,6 +19,12 @@ public class ProtectedLong {
         }
     }
 
+    public void set(long value) {
+        synchronized (this) {
+            this.value.set(value);
+        }
+    }
+
     public long add(long value) {
         synchronized (this) {
             return this.value.updateAndGet(v -> v + value);

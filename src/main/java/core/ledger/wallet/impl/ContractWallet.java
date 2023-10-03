@@ -7,13 +7,20 @@ import core.ledger.contract.Contract;
 import core.ledger.wallet.Wallet;
 import org.jetbrains.annotations.NotNull;
 
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ContractWallet extends Wallet {
 
     public ContractWallet(Contract contract){super(contract);}
+
+    public ContractWallet(PublicKey publicKey, PrivateKey privateKey, String publicAddress, @NotNull String accessKey,
+                  List<String> contracts, Map<String, TransactionOutput> transactions){
+        super(publicKey, privateKey, publicAddress, accessKey, contracts, transactions);
+    }
 
     public SystemTransaction sendSystemTransaction(PublicKey _recipient, double value, @NotNull Contract contract){
         if(getBalance(contract.getAddress()) < value) {
