@@ -1,5 +1,7 @@
 package core.io.task;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.function.BooleanSupplier;
 
 public class Chain<T> {
@@ -45,7 +47,7 @@ public class Chain<T> {
         return this;
     }
 
-    public static <T> Chain<T> bound(T owner) {
+    public static <T> @NotNull Chain<T> bound(T owner) {
         Chain<T> chain = new Chain<>();
         chain.boss = owner;
         //chain.findSource();

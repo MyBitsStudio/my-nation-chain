@@ -8,6 +8,7 @@ import core.ledger.wallet.Wallet;
 import core.utils.data.json.JsonSaver;
 import core.utils.data.serial.SerialSave;
 
+import java.util.List;
 import java.util.Map;
 
 public class ChainSaver {
@@ -69,6 +70,18 @@ public class ChainSaver {
 
     public Map<String, TransactionOutput> loadUTXO(){
         return chainSave.loadUTXO();
+    }
+
+    public List<Block> loadChain(){
+        return chainSave.loadChain();
+    }
+
+    public List<Contract> loadContracts(){
+        return chainSave.loadContracts();
+    }
+
+    public List<Wallet> loadWallets(){
+        return chainSave.loadWallets();
     }
 
 }

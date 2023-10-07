@@ -22,6 +22,16 @@ public class StringUtilities {
         return new String(ac, 12 - i, i);
     }
 
+    public static String ucFirst(String str) {
+        str = str.toLowerCase();
+        if (str.length() > 1) {
+            str = str.substring(0, 1).toUpperCase() + str.substring(1);
+        } else {
+            return str.toUpperCase();
+        }
+        return str;
+    }
+
     public static @org.jetbrains.annotations.NotNull
     String createRandomString(int length){
         int leftLimit = 48;

@@ -222,6 +222,21 @@ public class JsonSaver implements ChainSave {
     }
 
     @Override
+    public List<Block> loadChain() {
+        return null;
+    }
+
+    @Override
+    public List<Contract> loadContracts() {
+        return null;
+    }
+
+    @Override
+    public List<Wallet> loadWallets() {
+        return null;
+    }
+
+    @Override
     public String blockLocation() {
         return ".data/json/blocks/";
     }

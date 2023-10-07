@@ -13,10 +13,11 @@ public class Mnemonic {
     public static ArrayList<String> mnemonicPhrases = new ArrayList<>();
 
     public static void initPhrases(){
+        System.out.println("Loading Mnemonic Phrases...");
         BufferedReader reader;
         try {
             reader = new BufferedReader(new FileReader(
-                    "data/master/config/mnemonic.txt"));
+                    ".data/master/config/mnemonic.txt"));
             String line = reader.readLine();
             while (line != null) {
                 mnemonicPhrases.add(line);

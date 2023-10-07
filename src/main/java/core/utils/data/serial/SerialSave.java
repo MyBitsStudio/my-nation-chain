@@ -7,6 +7,8 @@ import core.ledger.wallet.Wallet;
 import core.utils.data.ChainSave;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class SerialSave implements ChainSave {
@@ -90,11 +92,62 @@ public class SerialSave implements ChainSave {
 
     @Override
     public Map<String, TransactionOutput> loadUTXO() {
-        try(FileInputStream fileInputStream = new FileInputStream(UTXOLocation() + "UTXO");
+        try(FileInputStream fileInputStream = new FileInputStream(UTXOLocation() + "UTXO.utxo");
             ObjectInputStream in = new ObjectInputStream(fileInputStream)) {
             return (Map<String, TransactionOutput>) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Block> loadChain() {
+        List<Block> blocks = new ArrayList<>();
+        File[] files = new File(blockLocation()).listFiles();
+        if(files != null){
+            for(File file : files){
+                try(FileInputStream fileInputStream = new FileInputStream(file);
+                    ObjectInputStream in = new ObjectInputStream(fileInputStream)) {
+                    blocks.add((Block) in.readObject());
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return blocks;
+    }
+
+    @Override
+    public List<Contract> loadContracts() {
+        List<Contract> contracts = new ArrayList<>();
+        File[] files = new File(contractLocation()).listFiles();
+        if(files != null){
+            for(File file : files){
+                try(FileInputStream fileInputStream = new FileInputStream(file);
+                    ObjectInputStream in = new ObjectInputStream(fileInputStream)) {
+                    contracts.add((Contract) in.readObject());
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return contracts;
+    }
+
+    @Override
+    public List<Wallet> loadWallets() {
+        List<Wallet> wallets = new ArrayList<>();
+        File[] files = new File(walletLocation()).listFiles();
+        if(files != null){
+            for(File file : files){
+                try(FileInputStream fileInputStream = new FileInputStream(file);
+                    ObjectInputStream in = new ObjectInputStream(fileInputStream)) {
+                    wallets.add((Wallet) in.readObject());
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return null;
     }

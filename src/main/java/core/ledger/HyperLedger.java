@@ -9,13 +9,11 @@ import core.utils.data.ChainSaver;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HyperLedger {
@@ -105,15 +103,41 @@ public class HyperLedger {
     }
 
     public void initiate(){
+        System.out.println("Initiating HyperLedger");
         synchronized (booting){
-            if(booting.get()){
                 CompletableFuture<Void> future =
                         CompletableFuture.runAsync(() -> UTXO = ChainSaver.getInstance().loadUTXO())
                         .thenRunAsync(() -> {
-
-                        });
+                            List<Block> blocks = ChainSaver.getInstance().loadChain();
+                            if(blocks != null) CHAIN.addAll(blocks);
+                            Collections.sort(CHAIN);
+                            for(Block block : CHAIN){
+                                System.out.println(block);
+                            }
+                        })
+                        .thenRunAsync(() -> {
+                            List<Contract> contracts = ChainSaver.getInstance().loadContracts();
+                            if(contracts != null) CONTRACTS.addAll(contracts);
+                            for(Contract contract : CONTRACTS){
+                                System.out.println(contract);
+                            }
+                        })
+                        .thenRunAsync(() -> {
+                            List<Wallet> wallets = ChainSaver.getInstance().loadWallets();
+                            if(wallets != null) WALLETS.addAll(wallets);
+                            for(Wallet wallet : WALLETS){
+                                System.out.println(wallet);
+                            }
+                        })
+                        ;
+                try{
+                    future.get();
+                } catch (ExecutionException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        }
+
+        booting.set(false);
     }
 
     public void addTransactionToChain(@NotNull Transaction transaction){

@@ -5,6 +5,7 @@ import core.ledger.block.transaction.TransactionOutput;
 import core.ledger.contract.Contract;
 import core.ledger.wallet.Wallet;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ChainSave {
@@ -19,6 +20,9 @@ public interface ChainSave {
     Contract loadContract(String contract);
     Wallet loadWallet(String wallet);
     Map<String, TransactionOutput> loadUTXO();
+    List<Block> loadChain();
+    List<Contract> loadContracts();
+    List<Wallet> loadWallets();
 
     String blockLocation();
     String contractLocation();
